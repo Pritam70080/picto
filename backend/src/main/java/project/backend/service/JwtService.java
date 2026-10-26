@@ -3,7 +3,6 @@ package project.backend.service;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import lombok.RequiredArgsConstructor;
 import project.backend.config.JwtProperties;
 import project.backend.entity.User;
 
