@@ -13,8 +13,8 @@ import { useLogout } from "@/hooks/use-auth";
 import { cn } from "@/lib/utils";
 import { ThemeToggler } from "@/components/theme-toggler";
 import { Spinner } from "@/components/ui/spinner";
+import { StorageWidget } from "@/components/layout/storage-widget";
 import type { User } from "@/lib/api";
-import Image from "next/image";
 
 const navItems = [
   { href: "/photos", label: "Photos", icon: Images },
@@ -37,7 +37,7 @@ export function SidebarNav({ user, onNavigate }: SidebarNavProps) {
       <div className="border-b border-sidebar-border px-5 py-5">
         <div className="flex items-center gap-3">
           <div className="flex size-9 items-center justify-center rounded-xl bg-primary/15 text-primary">
-            <Image src="/logo2.svg" alt="logo" width={36} height={36} className="size-9 h-auto w-auto" />
+            <img src="/Picto.png" alt="Picto" />
           </div>
           <div className="min-w-0">
             <p className="truncate text-sm font-semibold text-sidebar-foreground">Picto</p>
@@ -68,6 +68,8 @@ export function SidebarNav({ user, onNavigate }: SidebarNavProps) {
           );
         })}
       </nav>
+
+      <StorageWidget />
 
       <div className="mt-auto space-y-3 border-t border-sidebar-border px-3 py-4">
 

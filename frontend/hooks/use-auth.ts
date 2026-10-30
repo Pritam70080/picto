@@ -34,7 +34,7 @@ export function useLogin() {
         setAuth(data);
         queryClient.setQueryData(authKeys.me(), data.user);
         toast.success(`Welcome back, ${data.user.displayName}`);
-        router.replace("/");
+        router.replace("/photos");
       },
     });
   }
@@ -67,9 +67,10 @@ export function useLogin() {
       onSettled: () => {
         clearAuth();
         queryClient.removeQueries({ queryKey: authKeys.all });
-        toast.success("Signed out");
         router.replace("/login");
       },
+      onSuccess: () => toast.success("Signed out"),
+      onError: (error) => toast.error(error.message),
     });
   }
 

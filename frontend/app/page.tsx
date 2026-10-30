@@ -1,22 +1,27 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { Spinner } from "@/components/ui/spinner";
-import { useAuth } from "@/hooks/use-auth";
+import { MotionConfig } from "motion/react";
+import { FeatureSection, StoryIntro } from "@/components/landing/feature-section";
+import { LandingCta } from "@/components/landing/landing-cta";
+import { LandingFooter } from "@/components/landing/landing-footer";
+import { LandingHero } from "@/components/landing/landing-hero";
+import { LandingNav } from "@/components/landing/landing-nav";
+import { TransformationSection } from "@/components/landing/transformation-section";
 
 export default function HomePage() {
-  const router = useRouter();
-  const { isReady, isLoggedIn } = useAuth();
-
-  useEffect(() => {
-    if (!isReady) return;
-    router.replace(isLoggedIn ? "/photos" : "/login");
-  }, [isReady, isLoggedIn, router]);
-
   return (
-    <div className="flex min-h-full items-center justify-center bg-background text-muted-foreground">
-      <Spinner className="size-6" />
-    </div>
+    <MotionConfig reducedMotion="user">
+      <div className="landing-scrollbar h-full overflow-y-auto bg-background text-foreground">
+        <LandingNav />
+        <main>
+          <LandingHero />
+          <StoryIntro />
+          <FeatureSection />
+          <TransformationSection />
+          <LandingCta />
+        </main>
+        <LandingFooter />
+      </div>
+    </MotionConfig>
   );
 }
