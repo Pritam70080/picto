@@ -57,7 +57,7 @@ export function LandingNav() {
               </span>
               <Link
                 href="/photos"
-                className="group flex items-center gap-2 rounded-md bg-primary px-4 py-2.5 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/85"
+                className="group flex items-center gap-2 rounded-md bg-linear-to-b from-primary/50 to-primary dark:bg-linear-to-b dark:from-primary dark:to-primary/80 px-4 py-2.5 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/85"
               >
                 Your photos
                 <ArrowUpRight className="size-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
@@ -73,7 +73,7 @@ export function LandingNav() {
               </Link>
               <Link
                 href="/signup"
-                className="group flex items-center gap-2 rounded-md bg-primary px-4 py-2.5 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/85"
+                className="group flex items-center gap-2 rounded-md bg-linear-to-b from-primary/50 to-primary dark:bg-linear-to-b dark:from-primary dark:to-primary/80 px-4 py-2.5 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/85"
               >
                 Get started
                 <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />

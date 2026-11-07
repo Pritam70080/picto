@@ -12,7 +12,7 @@ type GuestGuardProps = {
 };
 
 /** For login/register pages — redirect away if already logged in. */
-export function GuestGuard({ children, redirectTo = "/" }: GuestGuardProps) {
+export function GuestGuard({ children, redirectTo = "/photos" }: GuestGuardProps) {
   const router = useRouter();
   const { isReady, isLoggedIn } = useAuth();
   const setReady = useAuthStore((state) => state.setReady);

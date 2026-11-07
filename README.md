@@ -51,12 +51,15 @@ Configure these environment variables for the backend before starting it:
 | `JWT_SECRET` | Yes | Secret used to sign tokens; use a strong, unique secret outside local development |
 | `IMAGEKIT_PUBLIC_KEY` | Yes | ImageKit public API key |
 | `IMAGEKIT_PRIVATE_KEY` | Yes | ImageKit private API key |
+| `GOOGLE_CLIENT_ID` | Required for Google sign-in | Google OAuth web client ID used to verify Google ID tokens |
 | `IMAGEKIT_URL_ENDPOINT` | No | ImageKit URL endpoint; defaults to the placeholder in the backend configuration |
 | `CORS_ALLOWED_ORIGINS` | No | Allowed frontend origin; defaults to `http://localhost:3000` |
 | `ACCESS_TOKEN_EXPIRY` | No | Access-token lifetime in milliseconds; defaults to `900000` |
 | `REFRESH_TOKEN_EXPIRY` | No | Refresh-token lifetime in milliseconds; defaults to `604800000` |
 
-The frontend uses `NEXT_PUBLIC_API_URL` to select the API base URL. It defaults to `http://localhost:8000/api`.
+The frontend uses `NEXT_PUBLIC_API_URL` to select the API base URL. It defaults to `http://localhost:8000/api`. Set `NEXT_PUBLIC_GOOGLE_CLIENT_ID` to the same Google OAuth web client ID to show the Google sign-in button. Configure the web client’s authorized JavaScript origin for the frontend URL.
+
+Google sign-in links to an existing account when the verified Google email matches. New Google accounts are created without a password credential, so they cannot sign in using email and password unless a password is set through a future account-management flow.
 
 ## Run locally
 

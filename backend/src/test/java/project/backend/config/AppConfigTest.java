@@ -4,10 +4,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.mock.web.MockHttpServletRequest;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AppConfigTest {
@@ -24,5 +26,12 @@ class AppConfigTest {
                 configuration.getAllowedOrigins());
         assertEquals(List.of("*"), configuration.getAllowedHeaders());
         assertTrue(configuration.getAllowCredentials());
+    }
+
+    @Test
+    void createsGoogleIdTokenVerifierForConfiguredClient() {
+        GoogleIdTokenVerifier verifier = new AppConfig().googleIdTokenVerifier(new GoogleProperties("google-client-id"));
+
+        assertNotNull(verifier);
     }
 }

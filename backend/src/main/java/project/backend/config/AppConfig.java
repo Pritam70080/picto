@@ -1,5 +1,8 @@
 package project.backend.config;
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.gson.GsonFactory;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,8 +14,15 @@ import java.util.Arrays;
 import java.util.List;
 
 @Configuration
-@EnableConfigurationProperties({JwtProperties.class, CorsProperties.class})
+@EnableConfigurationProperties({JwtProperties.class, CorsProperties.class, GoogleProperties.class})
 public class AppConfig {
+
+    @Bean
+    GoogleIdTokenVerifier googleIdTokenVerifier(GoogleProperties googleProperties) {
+        return new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), GsonFactory.getDefaultInstance())
+                .setAudience(List.of(googleProperties.clientId()))
+                .build();
+    }
 
     @Bean
     CorsConfigurationSource corsConfigurationSource(CorsProperties corsProperties) {

@@ -173,6 +173,8 @@ export const api = {
     request<AuthResponse>("/auth/register", { method: "POST", body: json(body) }, false),
   login: (body: { email: string; password: string }) =>
     request<AuthResponse>("/auth/login", { method: "POST", body: json(body) }, false),
+  googleLogin: (credential: string) =>
+    request<AuthResponse>("/auth/google", { method: "POST", body: json({ credential }) }, false),
   refresh: (refreshToken: string) =>
     request<AuthResponse>("/auth/refresh", { method: "POST", body: json({ refreshToken }) }, false),
   logout: () => {

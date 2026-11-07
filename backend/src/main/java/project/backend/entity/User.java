@@ -26,6 +26,9 @@ public class User {
     @Column(name="password_hash")
     private String passwordHash;
 
+    @Column(name = "google_subject", unique = true)
+    private String googleSubject;
+
     @Column(nullable = false, name="created_at", updatable = false)
     private Instant createdAt;
 

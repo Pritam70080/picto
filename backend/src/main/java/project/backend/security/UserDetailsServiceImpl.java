@@ -17,7 +17,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return userRepository.findByEmail(username.toLowerCase())
                 .map(user -> User.builder()
                     .username(user.getEmail())
-                    .password(user.getPasswordHash())
+                    .password(user.getPasswordHash() == null ? "" : user.getPasswordHash())
                         .authorities("ROLE_USER")
                         .build()
                 ).orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));

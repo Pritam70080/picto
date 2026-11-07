@@ -136,7 +136,7 @@ export function ProductDemo() {
           />
           <button
             type="submit"
-            className="flex shrink-0 items-center gap-1.5 rounded bg-primary px-3 py-2 text-[11px] font-medium text-primary-foreground transition-colors hover:bg-primary/85"
+            className="flex shrink-0 items-center gap-1.5 rounded bg-linear-to-b from-primary/50 to-primary dark:bg-linear-to-b dark:from-primary dark:to-primary/80 px-3 py-2 text-[11px] font-medium text-primary-foreground transition-colors hover:bg-primary/85"
           >
             <Sparkles className="size-3" />
             Preview

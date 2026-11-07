@@ -11,6 +11,8 @@ npm run dev
 
 By default, the frontend calls the Spring Boot API at `http://localhost:8000/api`. Set `NEXT_PUBLIC_API_URL` to override the API base URL.
 
+To enable Google sign-in, set `NEXT_PUBLIC_GOOGLE_CLIENT_ID` to your Google OAuth web client ID and set `GOOGLE_CLIENT_ID` to the same value for the backend. Add the frontend origin to the Google client’s authorized JavaScript origins.
+
 ## Features
 
 - Sign up, sign in, current-user session, token refresh, and sign out.

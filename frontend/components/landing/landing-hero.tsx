@@ -41,7 +41,7 @@ export function LandingHero() {
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <Link
               href="/signup"
-              className="group flex items-center gap-3 rounded-md bg-primary px-5 py-3.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/85"
+              className="group flex items-center gap-3 rounded-md bg-linear-to-b from-primary/50 to-primary dark:bg-linear-to-b dark:from-primary dark:to-primary/80 px-5 py-3.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/85"
             >
               Make room for magic
               <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />

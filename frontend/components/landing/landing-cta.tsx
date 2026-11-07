@@ -25,7 +25,7 @@ export function LandingCta() {
         </p>
         <Link
           href="/signup"
-          className="group mx-auto mt-8 inline-flex items-center gap-3 rounded-md bg-primary px-5 py-3.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/85"
+          className="group mx-auto mt-8 inline-flex items-center gap-3 rounded-md bg-linear-to-b from-primary/50 to-primary dark:bg-linear-to-b dark:from-primary dark:to-primary/80 px-5 py-3.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/85"
         >
           Get started with Picto
           <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />

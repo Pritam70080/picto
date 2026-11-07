@@ -4,11 +4,14 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import project.backend.dto.AuthResponse;
+import project.backend.dto.GoogleAuthRequest;
 import project.backend.dto.LoginRequest;
 import project.backend.dto.RegisterRequest;
+import project.backend.config.GoogleProperties;
 import project.backend.entity.RefreshToken;
 import project.backend.entity.User;
 import project.backend.exception.ResourceConflictException;
@@ -17,6 +20,11 @@ import project.backend.repository.RefreshTokenRepository;
 import project.backend.repository.UserRepository;
 
 import java.time.Instant;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 
 
 @Service
@@ -28,6 +36,8 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final JwtService jwtService;
+    private final GoogleIdTokenVerifier googleIdTokenVerifier;
+    private final GoogleProperties googleProperties;
 
     @Transactional
     public AuthResponse register(RegisterRequest request) {
@@ -48,11 +58,50 @@ public class AuthService {
     public AuthResponse login(LoginRequest request) {
         String email = request.email().toLowerCase().trim();
 
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(email, request.password())
-        );
+        User user = userRepository.findByEmail(email)
+                .filter(account -> account.getPasswordHash() != null)
+                .orElseThrow(() -> new UnauthorizedException("Invalid email or password."));
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(email, request.password())
+            );
+        } catch (AuthenticationException exception) {
+            throw new UnauthorizedException("Invalid email or password.");
+        }
+        refreshTokenRepository.deleteByUserId(user.getId());
+        return buildAuthResponse(user);
+    }
 
-        User user = userService.getByEmail(email);
+    @Transactional
+    public AuthResponse loginWithGoogle(GoogleAuthRequest request) {
+        if (googleProperties.clientId() == null || googleProperties.clientId().isBlank()) {
+            throw new IllegalStateException("Google Sign-In is not configured.");
+        }
+        GoogleIdToken idToken;
+        try {
+            idToken = googleIdTokenVerifier.verify(request.credential());
+        } catch (IOException exception) {
+            throw new IllegalStateException("Unable to verify Google credentials.", exception);
+        } catch (GeneralSecurityException exception) {
+            throw new UnauthorizedException("Invalid Google credential.");
+        }
+        if (idToken == null) {
+            throw new UnauthorizedException("Invalid Google credential.");
+        }
+
+        GoogleIdToken.Payload payload = idToken.getPayload();
+        if (!Boolean.TRUE.equals(payload.getEmailVerified())
+                || payload.getEmail() == null || payload.getEmail().isBlank()
+                || payload.getSubject() == null || payload.getSubject().isBlank()) {
+            throw new UnauthorizedException("Google account must have a verified email address.");
+        }
+
+        String email = payload.getEmail().toLowerCase().trim();
+        String googleSubject = payload.getSubject();
+        User user = userRepository.findByGoogleSubject(googleSubject)
+                .orElseGet(() -> userRepository.findByEmail(email)
+                        .map(existingUser -> linkGoogleAccount(existingUser, googleSubject))
+                        .orElseGet(() -> createGoogleUser(email, payload, googleSubject)));
         refreshTokenRepository.deleteByUserId(user.getId());
         return buildAuthResponse(user);
     }
@@ -88,5 +137,27 @@ public class AuthService {
                 .build();
         refreshTokenRepository.save(refreshToken);
         return new AuthResponse(accessToken, refreshTokenValue, userService.toUserResponse(user));
+    }
+
+    private User linkGoogleAccount(User user, String googleSubject) {
+        if (user.getGoogleSubject() != null && !user.getGoogleSubject().equals(googleSubject)) {
+            throw new UnauthorizedException("This email is already linked to another Google account.");
+        }
+        user.setGoogleSubject(googleSubject);
+        return userRepository.save(user);
+    }
+
+    private User createGoogleUser(String email, GoogleIdToken.Payload payload, String googleSubject) {
+        String displayName = payload.get("name") instanceof String name && !name.isBlank()
+                ? name.trim()
+                : email.substring(0, email.indexOf('@'));
+        if (displayName.length() > 100) {
+            displayName = displayName.substring(0, 100);
+        }
+        return userRepository.save(User.builder()
+                .email(email)
+                .displayName(displayName)
+                .googleSubject(googleSubject)
+                .build());
     }
 }

@@ -13,7 +13,8 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
-import { useLogin, useSignUp } from "@/hooks/use-auth";
+import { GoogleSignInButton } from "@/components/auth/google-sign-in-button";
+import { useGoogleLogin, useLogin, useSignUp } from "@/hooks/use-auth";
 import {
   loginSchema,
   signUpSchema,
@@ -28,6 +29,7 @@ type AuthFormProps = {
 export function AuthForm({ mode }: AuthFormProps) {
   const isLogin = mode === "login";
   const login = useLogin();
+  const googleLogin = useGoogleLogin();
   const registerUser = useSignUp();
 
   const loginForm = useForm<LoginFormValues>({
@@ -47,8 +49,9 @@ export function AuthForm({ mode }: AuthFormProps) {
     },
   });
 
-  const pending = isLogin ? login.isPending : registerUser.isPending;
-  const error = isLogin ? login.error : registerUser.error;
+  const pending = (isLogin ? login.isPending : registerUser.isPending) || googleLogin.isPending;
+  const error = (isLogin ? login.error : registerUser.error) ?? googleLogin.error;
+  const googleConfigured = !!process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
   const errorMessage =
     error instanceof Error ? error.message : isLogin ? "Unable to sign in" : "Unable to create account";
 
@@ -104,6 +107,23 @@ export function AuthForm({ mode }: AuthFormProps) {
             "Sign in"
           )}
         </Button>
+
+        {googleConfigured && (
+          <div className="space-y-3">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-card px-2 text-muted-foreground">or continue with</span>
+              </div>
+            </div>
+            <GoogleSignInButton
+              onCredential={googleLogin.mutate}
+              disabled={pending}
+            />
+          </div>
+        )}
 
         <p className="text-center text-sm text-muted-foreground">
           Don&apos;t have an account?{" "}
@@ -179,6 +199,23 @@ export function AuthForm({ mode }: AuthFormProps) {
           "Create account"
         )}
       </Button>
+
+      {googleConfigured && (
+        <div className="space-y-3">
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-card px-2 text-muted-foreground">or continue with</span>
+            </div>
+          </div>
+          <GoogleSignInButton
+            onCredential={googleLogin.mutate}
+            disabled={pending}
+          />
+        </div>
+      )}
 
       <p className="text-center text-sm text-muted-foreground">
         Already have an account?{" "}

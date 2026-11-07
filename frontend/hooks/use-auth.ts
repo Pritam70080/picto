@@ -38,6 +38,22 @@ export function useLogin() {
       },
     });
   }
+
+  export function useGoogleLogin() {
+    const router = useRouter();
+    const queryClient = useQueryClient();
+    const setAuth = useAuthStore((state) => state.setAuth);
+
+    return useMutation({
+      mutationFn: (credential: string) => api.googleLogin(credential),
+      onSuccess: (data) => {
+        setAuth(data);
+        queryClient.setQueryData(authKeys.me(), data.user);
+        toast.success(`Welcome back, ${data.user.displayName}`);
+        router.replace("/photos");
+      },
+    });
+  }
   
   /** Signup → save tokens → go to /photos */
   export function useSignUp() {
@@ -51,7 +67,7 @@ export function useLogin() {
         setAuth(data);
         queryClient.setQueryData(authKeys.me(), data.user);
         toast.success("Account created successfully");
-        router.replace("/");
+        router.replace("/photos");
       },
     });
   }
