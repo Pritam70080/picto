@@ -61,12 +61,13 @@ export function AuthForm({ mode }: AuthFormProps) {
     return (
       <form
         onSubmit={handleSubmit((values) => login.mutate(values))}
-        className="space-y-6"
+        className="flex w-full min-w-0 min-h-0 flex-1 flex-col gap-3 sm:gap-4 [@media(max-height:600px)]:gap-1"
       >
-        <FieldGroup>
-          <Field data-invalid={!!formState.errors.email}>
-            <FieldLabel htmlFor="email">Email</FieldLabel>
+        <FieldGroup className="min-w-0 gap-3 sm:gap-5 [@media(max-height:600px)]:gap-2 [@media(max-height:440px)]:gap-1">
+          <Field className="min-w-0 gap-1.5" data-invalid={!!formState.errors.email}>
+            <FieldLabel className="text-sm font-medium [@media(max-height:440px)]:sr-only" htmlFor="email">Email</FieldLabel>
             <Input
+              className="h-11 text-base placeholder:text-sm sm:h-10 [@media(max-height:600px)]:h-9 [@media(max-height:440px)]:h-7"
               id="email"
               type="email"
               autoComplete="email"
@@ -77,13 +78,14 @@ export function AuthForm({ mode }: AuthFormProps) {
             <FieldError errors={[formState.errors.email]} />
           </Field>
 
-          <Field data-invalid={!!formState.errors.password}>
-            <FieldLabel htmlFor="password">Password</FieldLabel>
+          <Field className="min-w-0 gap-1.5" data-invalid={!!formState.errors.password}>
+            <FieldLabel className="text-sm font-medium [@media(max-height:440px)]:sr-only" htmlFor="password">Password</FieldLabel>
             <Input
+              className="h-11 text-base placeholder:text-sm sm:h-10 [@media(max-height:600px)]:h-9 [@media(max-height:440px)]:h-7"
               id="password"
               type="password"
               autoComplete="current-password"
-              placeholder="Enter your password"
+              placeholder="Password"
               aria-invalid={!!formState.errors.password}
               {...register("password")}
             />
@@ -97,7 +99,7 @@ export function AuthForm({ mode }: AuthFormProps) {
           </Alert>
         )}
 
-        <Button type="submit" className="w-full" disabled={pending}>
+        <Button type="submit" size="lg" className="h-11 w-full mt-2 text-sm sm:h-10 [@media(max-height:600px)]:h-9 [@media(max-height:440px)]:h-8" disabled={pending}>
           {pending ? (
             <>
               <Spinner />
@@ -109,7 +111,7 @@ export function AuthForm({ mode }: AuthFormProps) {
         </Button>
 
         {googleConfigured && (
-          <div className="space-y-3">
+          <div className="w-full min-w-0 space-y-2 sm:space-y-3 [@media(max-height:600px)]:space-y-1 [@media(max-height:340px)]:hidden">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t" />
@@ -125,7 +127,7 @@ export function AuthForm({ mode }: AuthFormProps) {
           </div>
         )}
 
-        <p className="text-center text-sm text-muted-foreground">
+        <p className="mt-auto px-1 pt-2 text-center text-sm leading-relaxed text-muted-foreground [@media(max-height:600px)]:pt-0 [@media(max-height:440px)]:text-xs [@media(max-height:440px)]:leading-none">
           Don&apos;t have an account?{" "}
           <Link href="/signup" className="font-medium text-primary hover:underline">
             Sign up
@@ -140,12 +142,13 @@ export function AuthForm({ mode }: AuthFormProps) {
   return (
     <form
       onSubmit={handleSubmit((values) => registerUser.mutate(values))}
-      className="space-y-6"
+      className="flex w-full min-w-0 min-h-0 flex-1 flex-col gap-3 sm:gap-4 [@media(max-height:600px)]:gap-1"
     >
-      <FieldGroup>
-        <Field data-invalid={!!formState.errors.displayName}>
-          <FieldLabel htmlFor="displayName">Display name</FieldLabel>
+    <FieldGroup className="min-w-0 gap-3 sm:gap-5 [@media(max-height:600px)]:gap-2 [@media(max-height:440px)]:gap-1">
+      <Field className="min-w-0 gap-1.5" data-invalid={!!formState.errors.displayName}>
+        <FieldLabel className="text-sm font-medium [@media(max-height:440px)]:sr-only" htmlFor="displayName">Display name</FieldLabel>
           <Input
+          className="h-11 text-base placeholder:text-sm sm:h-10 [@media(max-height:600px)]:h-9 [@media(max-height:440px)]:h-7"
             id="displayName"
             type="text"
             autoComplete="name"
@@ -156,9 +159,10 @@ export function AuthForm({ mode }: AuthFormProps) {
           <FieldError errors={[formState.errors.displayName]} />
         </Field>
 
-        <Field data-invalid={!!formState.errors.email}>
-          <FieldLabel htmlFor="email">Email</FieldLabel>
+        <Field className="min-w-0 gap-1.5" data-invalid={!!formState.errors.email}>
+          <FieldLabel className="text-sm font-medium [@media(max-height:440px)]:sr-only" htmlFor="email">Email</FieldLabel>
           <Input
+            className="h-11 text-base placeholder:text-sm sm:h-10 [@media(max-height:600px)]:h-9 [@media(max-height:440px)]:h-7"
             id="email"
             type="email"
             autoComplete="email"
@@ -169,9 +173,10 @@ export function AuthForm({ mode }: AuthFormProps) {
           <FieldError errors={[formState.errors.email]} />
         </Field>
 
-        <Field data-invalid={!!formState.errors.password}>
-          <FieldLabel htmlFor="password">Password</FieldLabel>
+        <Field className="min-w-0 gap-1.5" data-invalid={!!formState.errors.password}>
+          <FieldLabel className="text-sm font-medium [@media(max-height:440px)]:sr-only" htmlFor="password">Password</FieldLabel>
           <Input
+            className="h-11 text-base placeholder:text-sm sm:h-10 [@media(max-height:600px)]:h-9 [@media(max-height:440px)]:h-7"
             id="password"
             type="password"
             autoComplete="new-password"
@@ -189,7 +194,7 @@ export function AuthForm({ mode }: AuthFormProps) {
         </Alert>
       )}
 
-      <Button type="submit" className="w-full" disabled={pending}>
+      <Button type="submit" size="lg" className="h-11 w-full text-sm mt-2 sm:h-10 [@media(max-height:600px)]:h-9 [@media(max-height:440px)]:h-8" disabled={pending}>
         {pending ? (
           <>
             <Spinner />
@@ -201,7 +206,7 @@ export function AuthForm({ mode }: AuthFormProps) {
       </Button>
 
       {googleConfigured && (
-        <div className="space-y-3">
+        <div className="w-full min-w-0 space-y-2 sm:space-y-3 [@media(max-height:600px)]:space-y-1 [@media(max-height:340px)]:hidden">
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t" />
@@ -217,7 +222,7 @@ export function AuthForm({ mode }: AuthFormProps) {
         </div>
       )}
 
-      <p className="text-center text-sm text-muted-foreground">
+      <p className="mt-auto px-1 pt-2 text-center text-sm leading-relaxed text-muted-foreground [@media(max-height:600px)]:pt-0 [@media(max-height:440px)]:text-xs [@media(max-height:440px)]:leading-none">
         Already have an account?{" "}
         <Link href="/login" className="font-medium text-primary hover:underline">
           Sign in

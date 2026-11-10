@@ -273,7 +273,7 @@ export function PhotoLibrary({ status }: { status: PhotoStatus }) {
         </AnimatePresence>
       </header>
 
-      <div className="mobile-scrollbar-hidden min-h-0 flex-1 overflow-y-auto overscroll-contain pr-1">
+      <div className="mobile-scrollbar-hidden min-h-0 flex-1 overflow-y-auto overscroll-contain p-2">
         {isLoading ? (
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6">
             {Array.from({ length: 12 }, (_, index) => <div key={index} className="aspect-square animate-pulse rounded-xl bg-muted" />)}

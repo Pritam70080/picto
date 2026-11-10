@@ -90,7 +90,7 @@ export function SidebarNav({ user, onNavigate }: SidebarNavProps) {
           type="button"
           onClick={() => logoutMutation.mutate()}
           disabled={logoutMutation.isPending}
-          className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-sidebar-accent/60 hover:text-sidebar-foreground disabled:opacity-50"
+          className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-primary-foreground transition-colors bg-linear-to-b from-primary/50 to-primary shadow-sm hover:bg-primary/80 dark:bg-linear-to-b dark:from-primary dark:to-primary/80 disabled:opacity-50"
         >
           {logoutMutation.isPending ? (
             <>

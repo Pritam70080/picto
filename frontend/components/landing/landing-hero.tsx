@@ -10,7 +10,7 @@ export function LandingHero() {
     <section className="relative overflow-hidden">
       <div className="landing-dot-grid pointer-events-none absolute inset-0" />
       <div className="pointer-events-none absolute right-[-8%] top-[-15%] size-[460px] rounded-full bg-primary/10 blur-[100px]" />
-      <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-4 pb-16 pt-12 sm:gap-12 sm:px-8 sm:pb-24 sm:pt-20 lg:grid-cols-[0.88fr_1.12fr] lg:gap-10 lg:px-12 lg:pb-28 lg:pt-24">
+      <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-4 pb-16 pt-12 sm:gap-12 sm:px-8 sm:pb-24 sm:pt-20 lg:grid-cols-[0.88fr_1.12fr] lg:gap-10 lg:px-12 lg:pb-28 lg:pt-16">
         <motion.div
           initial={{ opacity: 0, y: 22 }}
           animate={{ opacity: 1, y: 0 }}
