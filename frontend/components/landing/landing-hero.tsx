@@ -10,18 +10,18 @@ export function LandingHero() {
     <section className="relative overflow-hidden">
       <div className="landing-dot-grid pointer-events-none absolute inset-0" />
       <div className="pointer-events-none absolute right-[-8%] top-[-15%] size-[460px] rounded-full bg-primary/10 blur-[100px]" />
-      <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-4 pb-16 pt-12 sm:gap-12 sm:px-8 sm:pb-24 sm:pt-20 lg:grid-cols-[0.88fr_1.12fr] lg:gap-10 lg:px-12 lg:pb-28 lg:pt-16">
+      <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-4 pb-16 pt-8 sm:gap-12 sm:px-8 sm:pb-24 sm:pt-12 lg:grid-cols-[0.88fr_1.12fr] lg:gap-10 lg:px-12 lg:pb-20 lg:pt-10">
         <motion.div
           initial={{ opacity: 0, y: 22 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65, ease: "easeOut" }}
           className="relative z-10 max-w-xl"
         >
-          <div className="mb-6 inline-flex items-center gap-2 border border-border bg-card/70 px-3 py-1.5 text-[11px] tracking-wide text-muted-foreground sm:mb-7">
+          <div className="mb-4 inline-flex items-center gap-2 border border-border bg-card/70 px-3 py-1.5 text-[11px] tracking-wide text-muted-foreground sm:mb-5">
             <span className="size-1.5 rounded-full bg-primary" />
             YOUR PHOTOS, WITH MORE POSSIBILITY
           </div>
-          <h1 className="max-w-[620px] text-[clamp(3rem,10vw,6.65rem)] font-normal leading-[0.94] tracking-[-0.075em] text-foreground">
+          <h1 className="max-w-[620px] text-[clamp(2.75rem,8vw,5.25rem)] font-normal leading-[0.94] tracking-[-0.075em] text-foreground">
             Keep the
             <br />
             moment.
@@ -34,11 +34,11 @@ export function LandingHero() {
               feeling.
             </span>
           </h1>
-          <p className="mt-6 max-w-[410px] text-[15px] leading-7 text-muted-foreground sm:mt-7">
+          <p className="mt-4 max-w-[410px] text-[15px] leading-7 text-muted-foreground sm:mt-5">
             A home for the photos you love, with a little AI magic to help you
             imagine them differently.
           </p>
-          <div className="mt-8 flex flex-wrap items-center gap-3">
+          <div className="mt-6 flex flex-wrap items-center gap-3">
             <Link
               href="/signup"
               className="group flex items-center gap-3 rounded-md bg-linear-to-b from-primary/50 to-primary dark:bg-linear-to-b dark:from-primary dark:to-primary/80 px-5 py-3.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/85"
@@ -54,7 +54,7 @@ export function LandingHero() {
               <ArrowDown className="size-3.5" />
             </a>
           </div>
-          <div className="mt-8 flex items-center gap-3 text-[11px] text-muted-foreground sm:mt-10">
+          <div className="mt-6 flex items-center gap-3 text-[11px] text-muted-foreground sm:mt-8">
             <span className="flex -space-x-2">
               {["#d7c8bf", "#b8c5c6", "#d9d8eb"].map((color, index) => (
                 <span

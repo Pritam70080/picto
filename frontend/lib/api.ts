@@ -10,12 +10,13 @@ import {
   updateAlbumSchema,
 } from "@/lib/validations/library";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api";
+const API_URL = `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/api`;
 
 export type User = {
   id: string;
   email: string;
   displayName: string;
+  profileImage: string | null;
 };
 
 export type AuthResponse = {
@@ -88,7 +89,8 @@ export type StorageUsage = {
   libraryUsedBytes: number;
   libraryPhotoCount: number;
   imagekitBandwidthBytes: number | null;
-  imagekitStorageBytes: number | null;
+  imagekitStorageBytes: number;
+  imagekitStorageQuotaBytes: number;
 };
 
 export type AiTransformPreview = {

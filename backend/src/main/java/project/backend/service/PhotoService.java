@@ -36,10 +36,15 @@ public class PhotoService {
 
     private final PhotoRepository photoRepository;
     private final ImageKitService imageKitService;
+    private final SharedStorageService sharedStorageService;
 
-    public PhotoService(PhotoRepository photoRepository, ImageKitService imageKitService) {
+    public PhotoService(
+            PhotoRepository photoRepository,
+            ImageKitService imageKitService,
+            SharedStorageService sharedStorageService) {
         this.photoRepository = photoRepository;
         this.imageKitService = imageKitService;
+        this.sharedStorageService = sharedStorageService;
     }
 
     @Transactional(readOnly = true)
@@ -91,7 +96,7 @@ public class PhotoService {
     public PhotoResponse uploadPhoto(User user, MultipartFile file) {
         validateUpload(file);
 
-        FileUploadResponse uploadResponse = imageKitService.uploadPhoto(user, file);
+        FileUploadResponse uploadResponse = sharedStorageService.uploadPhoto(user, file);
 
         String fileId = uploadResponse.fileId()
                 .orElseThrow(() -> new BadRequestException("ImageKit did not return a file id"));

@@ -25,13 +25,20 @@ public class LibraryService {
 
     private final PhotoRepository photoRepository;
     private final ImageKitService imageKitService;
+    private final SharedStorageService sharedStorageService;
     private final PhotoService photoService;
 
-    @Transactional(readOnly = true)
     public StorageUsageResponse getStorageUsage(User user) {
         long usedBytes = photoRepository.sumActivePhotoBytesByUserId(user.getId());
         long photoCount = photoRepository.countByUserIdAndStatus(user.getId(), PhotoStatus.ACTIVE);
-        return new StorageUsageResponse(usedBytes, photoCount, null, null);
+        long accountStorageBytes = sharedStorageService.getAccountStorageBytes();
+        return new StorageUsageResponse(
+                usedBytes,
+                photoCount,
+                null,
+                accountStorageBytes,
+                sharedStorageService.getQuotaBytes()
+        );
     }
 
     @Transactional(readOnly = true)

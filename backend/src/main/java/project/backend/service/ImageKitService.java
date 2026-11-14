@@ -17,6 +17,7 @@ import io.imagekit.client.ImageKitClient;
 import io.imagekit.errors.ImageKitException;
 import io.imagekit.models.assets.AssetListParams;
 import io.imagekit.models.assets.AssetListResponse;
+import io.imagekit.models.files.File;
 import io.imagekit.models.files.FileDeleteParams;
 import io.imagekit.models.files.FileUploadParams;
 import io.imagekit.models.files.FileUploadResponse;
@@ -31,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImageKitService {
     private static final int AI_DOWNLOAD_MAX_ATTEMPTS = 12;
     private static final Duration AI_DOWNLOAD_RETRY_DELAY = Duration.ofSeconds(3);
+    private static final long ASSET_LIST_PAGE_SIZE = 100;
 
     private final ImageKitClient imageKitClient;
     private final ImageKitProperties imageKitProperties;
@@ -100,6 +102,44 @@ public class ImageKitService {
             );
         } catch (ImageKitException ex) {
             throw new ImageKitUploadException("Failed to list ImageKit assets: " + ex.getMessage(), ex);
+        }
+    }
+
+    public long getAccountStorageBytes() {
+        long totalBytes = 0;
+        long skip = 0;
+
+        try {
+            while (true) {
+                List<AssetListResponse> assets = imageKitClient.assets().list(
+                        AssetListParams.builder()
+                                .skip(skip)
+                                .limit(ASSET_LIST_PAGE_SIZE)
+                                .build()
+                );
+
+                for (AssetListResponse asset : assets) {
+                    if (!asset.isFile()) {
+                        continue;
+                    }
+
+                    File file = asset.asFile();
+                    long sizeBytes = file.size()
+                            .map(Double::longValue)
+                            .orElseThrow(() -> new ImageKitUploadException(
+                                    "ImageKit did not return an asset size"
+                            ));
+                    totalBytes = Math.addExact(totalBytes, sizeBytes);
+                }
+
+                if (assets.size() < ASSET_LIST_PAGE_SIZE) {
+                    return totalBytes;
+                }
+
+                skip += assets.size();
+            }
+        } catch (ImageKitException ex) {
+            throw new ImageKitUploadException("Failed to read ImageKit account storage: " + ex.getMessage(), ex);
         }
     }
 

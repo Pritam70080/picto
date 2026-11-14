@@ -29,6 +29,9 @@ public class User {
     @Column(name = "google_subject", unique = true)
     private String googleSubject;
 
+    @Column(name = "profile_image", nullable = true, length = 2048)
+    private String profileImage;
+
     @Column(nullable = false, name="created_at", updatable = false)
     private Instant createdAt;
 

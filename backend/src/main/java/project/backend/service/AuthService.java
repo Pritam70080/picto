@@ -98,10 +98,14 @@ public class AuthService {
 
         String email = payload.getEmail().toLowerCase().trim();
         String googleSubject = payload.getSubject();
+        String profileImage = payload.get("picture") instanceof String picture && !picture.isBlank()
+                ? picture
+                : null;
         User user = userRepository.findByGoogleSubject(googleSubject)
+                .map(existingUser -> linkGoogleAccount(existingUser, googleSubject, profileImage))
                 .orElseGet(() -> userRepository.findByEmail(email)
-                        .map(existingUser -> linkGoogleAccount(existingUser, googleSubject))
-                        .orElseGet(() -> createGoogleUser(email, payload, googleSubject)));
+                        .map(existingUser -> linkGoogleAccount(existingUser, googleSubject, profileImage))
+                        .orElseGet(() -> createGoogleUser(email, payload, googleSubject, profileImage)));
         refreshTokenRepository.deleteByUserId(user.getId());
         return buildAuthResponse(user);
     }
@@ -139,15 +143,21 @@ public class AuthService {
         return new AuthResponse(accessToken, refreshTokenValue, userService.toUserResponse(user));
     }
 
-    private User linkGoogleAccount(User user, String googleSubject) {
+    private User linkGoogleAccount(User user, String googleSubject, String profileImage) {
         if (user.getGoogleSubject() != null && !user.getGoogleSubject().equals(googleSubject)) {
             throw new UnauthorizedException("This email is already linked to another Google account.");
         }
         user.setGoogleSubject(googleSubject);
+        user.setProfileImage(profileImage);
         return userRepository.save(user);
     }
 
-    private User createGoogleUser(String email, GoogleIdToken.Payload payload, String googleSubject) {
+    private User createGoogleUser(
+            String email,
+            GoogleIdToken.Payload payload,
+            String googleSubject,
+            String profileImage
+    ) {
         String displayName = payload.get("name") instanceof String name && !name.isBlank()
                 ? name.trim()
                 : email.substring(0, email.indexOf('@'));
@@ -158,6 +168,7 @@ public class AuthService {
                 .email(email)
                 .displayName(displayName)
                 .googleSubject(googleSubject)
+                .profileImage(profileImage)
                 .build());
     }
 }

@@ -34,7 +34,6 @@ import {
 } from "@/components/ui/dialog";
 import { api, type ImageKitAsset, type Photo, type PhotoStatus } from "@/lib/api";
 import { libraryKeys, usePhotoActions, usePhotos, useStorageUsage } from "@/hooks/use-library";
-import { formatBytes } from "@/lib/utils";
 import { useLibraryStore } from "@/stores/library-store";
 
 const pageMeta: Record<PhotoStatus, { title: string; subtitle: string }> = {
@@ -75,11 +74,11 @@ function PhotoTile({
         onClick={onSelect}
         aria-label={selected ? `Deselect ${photo.fileName}` : `Select ${photo.fileName}`}
         aria-pressed={selected}
-        className={`absolute left-2 top-2 grid size-8 place-items-center rounded-full border border-white/60 bg-black/35 text-white backdrop-blur transition-opacity ${selected ? "opacity-100" : "opacity-0 group-hover:opacity-100 focus:opacity-100"}`}
+        className={`absolute left-2 top-2 grid size-9 place-items-center rounded-full border border-white/60 bg-black/35 text-white backdrop-blur transition-opacity sm:size-8 ${selected ? "opacity-100" : "opacity-100 sm:opacity-0 sm:group-hover:opacity-100 sm:focus:opacity-100"}`}
       >
         {selected ? <Check className="size-4" /> : <span className="size-3 rounded-full border border-white" />}
       </button>
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent px-3 pb-2 pt-8 opacity-0 transition-opacity group-hover:opacity-100">
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent px-3 pb-2 pt-8 opacity-100 transition-opacity sm:opacity-0 sm:group-hover:opacity-100">
         <p className="truncate text-xs font-medium text-white">{photo.fileName}</p>
       </div>
     </motion.article>
@@ -180,8 +179,8 @@ export function PhotoLibrary({ status }: { status: PhotoStatus }) {
 
   const heading = pageMeta[status];
   return (
-    <section className="flex h-full min-h-0 flex-col">
-      <header className="shrink-0 space-y-4 pb-4 sm:pb-5">
+    <section className="flex min-h-full flex-col md:h-full md:min-h-0">
+      <header className="shrink-0 space-y-3 pb-3 sm:space-y-4 sm:pb-5">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="min-w-0">
             <p className="mb-1 text-xs font-semibold uppercase tracking-[0.16em] text-primary">Your library</p>
@@ -189,7 +188,7 @@ export function PhotoLibrary({ status }: { status: PhotoStatus }) {
             <p className="mt-1 text-sm text-muted-foreground">{heading.subtitle}</p>
           </div>
           <div className="flex shrink-0 items-center gap-2">
-            <Button variant="outline" size="sm" onClick={() => setImportOpen(true)}>
+            <Button variant="outline" size="sm" className="size-11 px-0 sm:h-9 sm:w-auto sm:px-3" onClick={() => setImportOpen(true)} aria-label="Import photos">
               <ImagePlus /> <span className="hidden sm:inline">Import</span>
             </Button>
             {status === "ACTIVE" && (
@@ -208,6 +207,7 @@ export function PhotoLibrary({ status }: { status: PhotoStatus }) {
                 />
                 <LoadingButton
                   size="sm"
+                  className="size-11 px-0 sm:h-9 sm:w-auto sm:px-3"
                   onClick={() => fileInput.current?.click()}
                   isLoading={uploadMutation.isPending}
                   aria-label={uploadMutation.isPending ? "Uploading photos" : "Upload photos"}
@@ -243,9 +243,9 @@ export function PhotoLibrary({ status }: { status: PhotoStatus }) {
               {allVisibleSelected ? "Deselect all" : "Select all"}
             </Button>
           </div>
-          <div className="flex items-center gap-2 rounded-full bg-muted/60 px-3 py-2 text-xs text-muted-foreground">
+          <div className="flex w-full items-center gap-2 rounded-full bg-muted/60 px-3 py-2 text-xs text-muted-foreground sm:w-auto">
             <span className="size-2 rounded-full bg-emerald-500" />
-            {storage ? `${storage.libraryPhotoCount} photos · ${formatBytes(storage.libraryUsedBytes)}` : "Library storage"}
+            {storage ? `${storage.libraryPhotoCount} photos in your library` : "Your library"}
           </div>
         </div>
 
@@ -273,7 +273,7 @@ export function PhotoLibrary({ status }: { status: PhotoStatus }) {
         </AnimatePresence>
       </header>
 
-      <div className="mobile-scrollbar-hidden min-h-0 flex-1 overflow-y-auto overscroll-contain p-2">
+      <div className="p-2 md:min-h-0 md:flex-1 md:overflow-y-auto md:overscroll-contain">
         {isLoading ? (
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6">
             {Array.from({ length: 12 }, (_, index) => <div key={index} className="aspect-square animate-pulse rounded-xl bg-muted" />)}
@@ -303,8 +303,8 @@ export function PhotoLibrary({ status }: { status: PhotoStatus }) {
               <div className="flex items-center justify-between border-t py-3">
                 <p className="text-xs text-muted-foreground">Page {photosPage.page + 1} of {photosPage.totalPages}</p>
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm" onClick={() => setPage((current) => Math.max(0, current - 1))} disabled={page === 0}><ChevronLeft /> Previous</Button>
-                  <Button variant="outline" size="sm" onClick={() => setPage((current) => current + 1)} disabled={photosPage.last}><span className="hidden sm:inline">Next</span> <ChevronRight /></Button>
+                  <Button variant="outline" size="sm" onClick={() => setPage((current) => Math.max(0, current - 1))} disabled={page === 0} aria-label="Previous page"><ChevronLeft /> <span className="hidden sm:inline">Previous</span></Button>
+                  <Button variant="outline" size="sm" onClick={() => setPage((current) => current + 1)} disabled={photosPage.last} aria-label="Next page"><span className="hidden sm:inline">Next</span> <ChevronRight /></Button>
                 </div>
               </div>
             )}

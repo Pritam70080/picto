@@ -23,7 +23,7 @@ export function AppShell({ children }: AppShellProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <div className="flex h-dvh min-h-0 flex-col overflow-hidden bg-background">
+    <div className="flex min-h-dvh flex-col bg-background md:h-dvh md:min-h-0 md:overflow-hidden">
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 border-r border-sidebar-border bg-sidebar md:block">
         <SidebarNav user={user} />
       </aside>
@@ -37,9 +37,9 @@ export function AppShell({ children }: AppShellProps) {
         </SheetContent>
       </Sheet>
 
-      <div className="flex min-h-0 flex-1 flex-col md:pl-64">
+      <div className="flex min-w-0 flex-1 flex-col md:min-h-0 md:pl-64">
         {isMobile && (
-          <header className="z-20 flex shrink-0 items-center gap-3 border-b border-border/60 bg-background/90 px-4 py-3 backdrop-blur-sm">
+          <header className="z-20 flex shrink-0 items-center gap-3 border-b border-border/60 bg-background/90 px-3 py-3 backdrop-blur-sm sm:px-4">
             <Button
               variant="outline"
               size="icon-sm"
@@ -57,7 +57,7 @@ export function AppShell({ children }: AppShellProps) {
           </header>
         )}
 
-        <main className="min-h-0 flex-1 overflow-hidden px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
+        <main className="min-w-0 flex-1 px-3 py-3 sm:px-6 sm:py-6 lg:px-8 md:min-h-0 md:overflow-hidden">
           {children}
         </main>
       </div>

@@ -189,7 +189,7 @@ export function PhotoDetail({
   const previewUrl = editorState.previewUrl;
 
   return (
-    <section className="mobile-scrollbar-hidden h-full min-h-0 overflow-y-auto overscroll-contain lg:overflow-hidden">
+    <section className="min-h-full md:h-full md:min-h-0 md:overflow-y-auto md:overscroll-contain lg:overflow-hidden">
       <div className="mx-auto flex min-h-full w-full max-w-6xl flex-col gap-4 pb-6 lg:h-full lg:min-h-0 lg:pb-0">
         <header className="flex min-w-0 shrink-0 items-center gap-3">
           <Button variant="outline" size="icon" aria-label="Back" onClick={() => router.push(returnTo)}>

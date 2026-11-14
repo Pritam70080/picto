@@ -202,9 +202,9 @@ export function AlbumsLibrary() {
   };
 
   return (
-    <section className="flex h-full min-h-0 flex-col">
-      <header className="flex shrink-0 items-center justify-between gap-3 pb-5">
-        <div className="flex min-w-0 items-center gap-3">
+    <section className="flex min-h-full flex-col md:h-full md:min-h-0">
+      <header className="flex shrink-0 flex-col gap-3 pb-4 sm:flex-row sm:items-center sm:justify-between sm:pb-5">
+        <div className="flex min-w-0 items-center gap-2 sm:gap-3">
           {activeAlbumId && (
             <Button variant="outline" size="icon" aria-label="Back to albums" onClick={() => { setActiveAlbumId(null); router.replace("/albums"); }} disabled={deleteMutation.isPending || addMutation.isPending}>
               <ArrowLeft />
@@ -219,16 +219,16 @@ export function AlbumsLibrary() {
           </div>
         </div>
         {album ? (
-          <div className="flex shrink-0 gap-2">
-            <Button variant="outline" size="sm" onClick={() => { setEditingTitle(album.title); setCreateOpen(true); }}><Pencil /> <span className="hidden sm:inline">Rename</span></Button>
-            <Button size="sm" onClick={() => setAddPhotosOpen(true)}><Plus /> <span className="hidden sm:inline">Add photos</span></Button>
+          <div className="flex shrink-0 justify-end gap-2 self-end sm:self-auto">
+            <Button variant="outline" size="sm" className="size-11 px-0 sm:h-9 sm:w-auto sm:px-3" aria-label="Rename album" onClick={() => { setEditingTitle(album.title); setCreateOpen(true); }}><Pencil /> <span className="hidden sm:inline">Rename</span></Button>
+            <Button size="sm" className="size-11 px-0 sm:h-9 sm:w-auto sm:px-3" aria-label="Add photos" onClick={() => setAddPhotosOpen(true)}><Plus /> <span className="hidden sm:inline">Add photos</span></Button>
           </div>
         ) : (
-          <Button size="sm" onClick={() => { setAlbumTitle(""); setCreateOpen(true); }}><FolderPlus /> New album</Button>
+          <Button size="sm" className="self-end sm:self-auto" onClick={() => { setAlbumTitle(""); setCreateOpen(true); }}><FolderPlus /> New album</Button>
         )}
       </header>
 
-      <div className="mobile-scrollbar-hidden min-h-0 flex-1 overflow-y-auto overscroll-contain pr-1">
+      <div className="pr-1 md:min-h-0 md:flex-1 md:overflow-y-auto md:overscroll-contain">
         {album ? (
           albumPhotosQuery.isLoading ? (
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6">{Array.from({ length: 8 }, (_, index) => <div key={index} className="aspect-square animate-pulse rounded-xl bg-muted" />)}</div>
@@ -480,7 +480,7 @@ function AlbumPhoto({
           <span className="sr-only">Remove from album. The photo stays in your library.</span>
         </LoadingButton>
       </div>
-      {isCover && <span className="absolute left-2 top-2 rounded-full bg-black/50 px-2 py-1 text-[10px] font-medium text-white">Cover</span>}
+      {isCover && <span className="absolute right-2 top-2 rounded-full bg-black/50 px-2 py-1 text-[10px] font-medium text-white">Cover</span>}
     </motion.article>
   );
 }

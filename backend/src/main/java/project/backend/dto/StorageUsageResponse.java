@@ -4,6 +4,7 @@ public record StorageUsageResponse(
         long libraryUsedBytes,
         long libraryPhotoCount,
         Long imagekitBandwidthBytes,
-        Long imagekitStorageBytes
+        long imagekitStorageBytes,
+        long imagekitStorageQuotaBytes
 ) {
 }

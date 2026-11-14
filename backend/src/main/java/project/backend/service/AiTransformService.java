@@ -20,6 +20,7 @@ public class AiTransformService {
 
     private final PhotoRepository photoRepository;
     private final ImageKitService imageKitService;
+    private final SharedStorageService sharedStorageService;
     private final PhotoService photoService;
 
     public AiTransformPreviewResponse preview(User user, UUID photoId, AiTransformRequest request) {
@@ -39,7 +40,7 @@ public class AiTransformService {
         String suffix = request.type().name().toLowerCase().replace('_', '-');
         String fileName = buildDerivedFileName(photo.getFileName(), suffix);
 
-        var uploadResponse = imageKitService.uploadBytes(user, transformedBytes, fileName);
+        var uploadResponse = sharedStorageService.uploadBytes(user, transformedBytes, fileName);
         return photoService.createDerivedPhoto(user, photo, uploadResponse, request.type());
     }
 

@@ -9,9 +9,26 @@ npm install
 npm run dev
 ```
 
-By default, the frontend calls the Spring Boot API at `http://localhost:8000/api`. Set `NEXT_PUBLIC_API_URL` to override the API base URL.
+## Configuration
 
-To enable Google sign-in, set `NEXT_PUBLIC_GOOGLE_CLIENT_ID` to your Google OAuth web client ID and set `GOOGLE_CLIENT_ID` to the same value for the backend. Add the frontend origin to the Google client’s authorized JavaScript origins.
+Copy `.env.example` to `.env.local` and set the values for your environment:
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:8000
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=your-google-oauth-web-client-id
+```
+
+`NEXT_PUBLIC_API_URL` is the base URL of the backend API. For a deployed frontend, set it to the public backend URL.
+
+Google sign-in requires a Google OAuth client ID of type **Web application**:
+
+1. Add the frontend origin (for local development, `http://localhost:3000`) to the OAuth client’s **Authorized JavaScript origins**.
+2. Set `NEXT_PUBLIC_GOOGLE_CLIENT_ID` in the frontend environment.
+3. Set `GOOGLE_CLIENT_ID` to the same client ID in the backend environment.
+
+The Google sign-in button is shown when `NEXT_PUBLIC_GOOGLE_CLIENT_ID` is set. Because it uses the `NEXT_PUBLIC_` prefix, the client ID is included in the frontend bundle; do not put secrets in `NEXT_PUBLIC_` variables. Set public frontend variables in the environment used to build/deploy the frontend.
+
+For backend Docker build, Docker Hub publishing, and container runtime configuration, see [Docker deployment in the root README](../README.md#docker-deployment-and-docker-hub). The Dockerfile currently packages the backend only; deploy the frontend separately and point `NEXT_PUBLIC_API_URL` at that backend.
 
 ## Features
 

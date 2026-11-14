@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 import { ThemeToggler } from "@/components/theme-toggler";
 import { Spinner } from "@/components/ui/spinner";
 import { StorageWidget } from "@/components/layout/storage-widget";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { User } from "@/lib/api";
 
 const navItems = [
@@ -33,11 +34,11 @@ export function SidebarNav({ user, onNavigate }: SidebarNavProps) {
   const logoutMutation = useLogout();
 
   return (
-    <div className="flex h-full flex-col">
-      <div className="border-b border-sidebar-border px-5 py-5">
+    <div className="mobile-scrollbar-hidden flex h-full min-h-0 flex-col overflow-y-auto overscroll-contain">
+      <div className="border-b border-sidebar-border px-5 py-4">
         <div className="flex items-center gap-3">
           <div className="flex size-9 items-center justify-center rounded-xl bg-primary/15 text-primary">
-            <img src="/Picto.png" alt="Picto" />
+            <img src="/Picto.png" alt="Picto Logo" />
           </div>
           <div className="min-w-0">
             <p className="truncate text-sm font-semibold text-sidebar-foreground">Picto</p>
@@ -71,13 +72,23 @@ export function SidebarNav({ user, onNavigate }: SidebarNavProps) {
 
       <StorageWidget />
 
-      <div className="mt-auto space-y-3 border-t border-sidebar-border px-3 py-4">
+      <div className="mt-auto space-y-2 border-t border-sidebar-border px-3 py-3">
 
         {user && (
           <div className="rounded-xl bg-sidebar-accent/40 px-3 py-2.5">
             <p className="text-[11px] uppercase tracking-wide text-muted-foreground">Signed in as</p>
-            <p className="truncate text-sm font-medium text-sidebar-foreground">{user.displayName}</p>
-            <p className="truncate text-xs text-muted-foreground">{user.email}</p>
+            <div className="mt-2 flex min-w-0 items-center gap-3">
+              <Avatar className="size-10 shadow-sm">
+                <AvatarImage src={user.profileImage ?? undefined} alt={`${user.displayName}'s profile`} />
+                <AvatarFallback>
+                  {user.displayName.trim().charAt(0).toUpperCase() || "?"}
+                </AvatarFallback>
+              </Avatar>
+              <div className="min-w-0">
+                <p className="truncate text-sm font-medium text-sidebar-foreground">{user.displayName}</p>
+                <p className="truncate text-xs text-muted-foreground">{user.email}</p>
+              </div>
+            </div>
           </div>
         )}
 
