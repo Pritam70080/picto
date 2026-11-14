@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -28,6 +30,7 @@ type AuthFormProps = {
 
 export function AuthForm({ mode }: AuthFormProps) {
   const isLogin = mode === "login";
+  const [showPassword, setShowPassword] = useState(false);
   const login = useLogin();
   const googleLogin = useGoogleLogin();
   const registerUser = useSignUp();
@@ -80,15 +83,26 @@ export function AuthForm({ mode }: AuthFormProps) {
 
           <Field className="min-w-0 gap-1.5" data-invalid={!!formState.errors.password}>
             <FieldLabel className="text-sm font-medium [@media(max-height:440px)]:sr-only" htmlFor="password">Password</FieldLabel>
-            <Input
-              className="h-11 text-base placeholder:text-sm sm:h-10 [@media(max-height:600px)]:h-9 [@media(max-height:440px)]:h-7"
-              id="password"
-              type="password"
-              autoComplete="current-password"
-              placeholder="Password"
-              aria-invalid={!!formState.errors.password}
-              {...register("password")}
-            />
+            <div className="relative">
+              <Input
+                className="h-11 pr-10 text-base placeholder:text-sm sm:h-10 [@media(max-height:600px)]:h-9 [@media(max-height:440px)]:h-7"
+                id="password"
+                type={showPassword ? "text" : "password"}
+                autoComplete="current-password"
+                placeholder="Password"
+                aria-invalid={!!formState.errors.password}
+                {...register("password")}
+              />
+              <button
+                type="button"
+                className="absolute right-1 top-1/2 grid size-8 -translate-y-1/2 place-items-center rounded-full text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring [@media(max-height:440px)]:size-6"
+                onClick={() => setShowPassword((visible) => !visible)}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                aria-pressed={showPassword}
+              >
+                {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+              </button>
+            </div>
             <FieldError errors={[formState.errors.password]} />
           </Field>
         </FieldGroup>
@@ -175,15 +189,26 @@ export function AuthForm({ mode }: AuthFormProps) {
 
         <Field className="min-w-0 gap-1.5" data-invalid={!!formState.errors.password}>
           <FieldLabel className="text-sm font-medium [@media(max-height:440px)]:sr-only" htmlFor="password">Password</FieldLabel>
-          <Input
-            className="h-11 text-base placeholder:text-sm sm:h-10 [@media(max-height:600px)]:h-9 [@media(max-height:440px)]:h-7"
-            id="password"
-            type="password"
-            autoComplete="new-password"
-            placeholder="At least 6 characters"
-            aria-invalid={!!formState.errors.password}
-            {...register("password")}
-          />
+          <div className="relative">
+            <Input
+              className="h-11 pr-10 text-base placeholder:text-sm sm:h-10 [@media(max-height:600px)]:h-9 [@media(max-height:440px)]:h-7"
+              id="password"
+              type={showPassword ? "text" : "password"}
+              autoComplete="new-password"
+              placeholder="At least 6 characters"
+              aria-invalid={!!formState.errors.password}
+              {...register("password")}
+            />
+            <button
+              type="button"
+              className="absolute right-1 top-1/2 grid size-8 -translate-y-1/2 place-items-center rounded-full text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring [@media(max-height:440px)]:size-6"
+              onClick={() => setShowPassword((visible) => !visible)}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+              aria-pressed={showPassword}
+            >
+              {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+            </button>
+          </div>
           <FieldError errors={[formState.errors.password]} />
         </Field>
       </FieldGroup>

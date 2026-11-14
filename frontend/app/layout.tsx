@@ -57,7 +57,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", notoSans.variable, ebGaramondHeading.variable)}
       suppressHydrationWarning
     >
-      <body className="h-full overflow-hidden flex flex-col">
+      <body className="flex h-full flex-col overflow-y-auto md:overflow-hidden">
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
